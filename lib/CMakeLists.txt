@@ -23,7 +23,9 @@ add_custom_command(
         "${PROTO_FILE}"
         DEPENDS "${PROTO_FILE}")
 
-add_library(hex_client_lib STATIC hex_client.cpp hex_client_impl.cpp ${PROTOBUF_SOURCE} ${GRPC_SOURCE})
+
+add_library(hex_client_lib STATIC hex_client.cpp hex_client_impl.cpp hex_client_impl.h ${PROTOBUF_SOURCE} ${GRPC_SOURCE})
+target_include_directories(hex_client_lib PUBLIC "${CMAKE_CURRENT_BINARY_DIR}")
 target_include_directories(hex_client_lib PUBLIC ../include)
 
 target_link_libraries(hex_client_lib ${GRPC_GRPCPP_LIBRARY} ${PROTOBUF_LIBRARY})

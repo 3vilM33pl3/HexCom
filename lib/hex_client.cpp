@@ -1,5 +1,5 @@
 #include <hexworld/hex_client.h>
-#include <hexworld/hex_client_impl.h>
+#include "hex_client_impl.h"
 
 HexagonClient::HexagonClient() {
     impl = new HexagonClientImpl();
@@ -9,11 +9,11 @@ HexagonClient::HexagonClient(const std::string server_address) {
     impl = new HexagonClientImpl(server_address);
 }
 
-HexWorldConnectionState HexagonClient::ConnectToServer() {
+hw_conn_state HexagonClient::ConnectToServer() {
     return impl->ConnectToServer();
 }
 
-HexWorldConnectionState HexagonClient::GetConnectionState() {
+hw_conn_state HexagonClient::GetConnectionState() {
     return impl->GetConnectionState();
 }
 

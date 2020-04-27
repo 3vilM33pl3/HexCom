@@ -10,5 +10,7 @@ typedef enum {
     /** retrying connection to server */
     HEXWORLD_CONNECTION_RETRY,
     /** connection failure that it can not recover from */
-    HEXWORLD_CONNECTION_FATAL
-} HexWorldConnectionState;
+    HEXWORLD_CONNECTION_FATAL,
+    /** connection timeout */
+    HEXWORLD_CONNECTION_TIMEOUT
+} hw_conn_state;

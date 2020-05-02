@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package hexagon_world;
+package hexagon;
 
 message Hex {
     int64 X = 1; //

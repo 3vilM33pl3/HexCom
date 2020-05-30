@@ -28,4 +28,4 @@ add_library(hex_client_lib STATIC hex_client.cpp hex_client_impl.cpp hex_client_
 target_include_directories(hex_client_lib PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_include_directories(hex_client_lib PUBLIC ../include)
 
-target_link_libraries(hex_client_lib ${GRPC_GRPCPP_LIBRARY} ${PROTOBUF_LIBRARY})
+target_link_libraries(hex_client_lib ${GRPC_GRPCPP_LIBRARY} ${PROTOBUF_LIBRARY} ${llvm_libs})

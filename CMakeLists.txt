@@ -4,27 +4,30 @@ project(HexCom)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-# if linux
-#set(CMAKE_C_COMPILER /usr/bin/clang-9)
-#set(CMAKE_CXX_COMPILER /usr/bin/clang++-9)
-#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi ")
+IF(UNIX)
+    find_package(LLVM 9.0 REQUIRED CONFIG)
+    message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
+    message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
+    include_directories(${LLVM_INCLUDE_DIRS})
+    add_definitions(${LLVM_DEFINITIONS})
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+ENDIF()
 
-#set(CMAKE_THREAD_LIBS_INIT "-lpthread")
-#set(CMAKE_HAVE_THREADS_LIBRARY 1)
-#set(CMAKE_USE_WIN32_THREADS_INIT 0)
-#set(CMAKE_USE_PTHREADS_INIT 1)
-#set(THREADS_PREFER_PTHREAD_FLAG ON)
-#set(protobuf_VERBOSE ON)
-
-find_package(LLVM 9.0 REQUIRED CONFIG)
-
-message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
-message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
-include_directories(${LLVM_INCLUDE_DIRS})
-add_definitions(${LLVM_DEFINITIONS})
+IF (WIN32)
+    #    Point to Boost by setting BOOST_ROOT variable
+    #    cmake -DBOOST_ROOT=C:/local/boost_1_69_0
+    #    set(BOOST_ROOT C:/local/boost_1_69_0)
+    #    On the windows instance of Github Actions Boost is located here:
+    #    cmake -DBOOST_ROOT=C:/hostedtoolcache/windows/Boost/1.69.0
+    #    set(BOOST_ROOT C:/hostedtoolcache/windows/Boost/1.69.0)
+    add_definitions(/D_WIN32_WINNT=0x0601)
+    set(Boost_NO_SYSTEM_PATHS ON)
+    set(Boost_USE_STATIC_LIBS ON)
+    set(Boost_COMPILER -vc141)
+    set(Boost_ARCHITECTURE -x64)
+ENDIF()
 
 set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE INTERNAL "No dev warnings")
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 include(FetchContent)
 

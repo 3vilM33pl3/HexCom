@@ -77,25 +77,93 @@ add_custom_target(create_zip
 #        ${CMAKE_CURRENT_BINARY_DIR}/hexcom-install/)
 
 set(hexcom_install_dir ${CMAKE_CURRENT_BINARY_DIR}/../hexcom-install/)
+file(MAKE_DIRECTORY ${hexcom_install_dir})
 
-add_custom_target(copy_files ALL
-        COMMAND mkdir -p ${hexcom_install_dir}
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/lib/libhex_client_lib.a ${hexcom_install_dir}
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/protobuf/libprotobuf.a ${hexcom_install_dir}
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/libgrpc++.a ${hexcom_install_dir}
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/libgrpc.a ${hexcom_install_dir}
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/libgpr.a ${hexcom_install_dir}
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/libaddress_sorting.a ${hexcom_install_dir}
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/boringssl-with-bazel/libssl.a ${hexcom_install_dir}
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/boringssl-with-bazel/libcrypto.a ${hexcom_install_dir}
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/libupb.a ${hexcom_install_dir}
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/zlib/libz.a ${hexcom_install_dir}
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/cares/cares/lib/libcares.a ${hexcom_install_dir}
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/base/*.a ${hexcom_install_dir})
+set(HEXCOM_HEADER_FILES
+        ${CMAKE_SOURCE_DIR}/include/hex_client.h
+        ${CMAKE_SOURCE_DIR}/include/hex_com_state.h
+        ${CMAKE_SOURCE_DIR}/include/hex_lib.h
+        )
 
-add_custom_target(copy_ue4 ALL
-        COMMAND cp ${hexcom_install_dir}lib*.a /home/olivier/Projects/UnrealProjects/HexWorld/Plugins/HexWorldCreator/Source/ThirdParty/HexWorldCreatorLibrary/Linux/Release/)
+if(WIN32)
+    set(HEXCOM_LIBS
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/hex_client_lib.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/address_sorting.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/cares/cares/lib/cares.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/boringssl-with-bazel/crypto.lib 
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/gpr.lib 
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/grpc.lib 
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/grpc++.lib 
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/protobuf/libprotobuf.lib 
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/boringssl-with-bazel/ssl.lib 
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/upb.lib 
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/zlib/zlibstatic.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/base/absl_base.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/numeric/absl_int128.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/base/absl_raw_logging_internal.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/base/absl_throw_delegate.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/time/absl_time.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/time/absl_time_zone.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/strings/absl_str_format_internal.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/strings/absl_strings_internal.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/strings/absl_strings.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/types/absl_bad_optional_access.lib
+            )
+    set(UNREAL_PROJECT_DIR F:/Unreal/HexWorld/)
+    set(UNREAL_PLATFORM Win64)
+    
+elseif(UNIX)
+    set(HEXCOM_LIBS
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/libhex_client_lib.a
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/protobuf/libprotobuf.a
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/libgrpc++.a
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/libgrpc.a
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/libgpr.a
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/libaddress_sorting.a
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/boringssl-with-bazel/libssl.a
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/boringssl-with-bazel/libcrypto.a
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/libupb.a
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/zlib/libz.a
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/cares/cares/lib/libcares.a
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/base/*.a)
 
-add_dependencies(create_zip copy_files)
+    set(UNREAL_PROJECT_DIR /home/olivier/Projects/UnrealProjects/HexWorld)
+    set(UNREAL_PLATFORM Linux)
+endif()
+
+add_custom_target(copy_ue4)
+add_custom_target(copy_files)
+add_custom_target(copy_headers)
+
+add_dependencies(copy_ue4 copy_headers)
+add_dependencies(copy_headers hex_client_lib)
 add_dependencies(copy_files hex_client_lib)
-add_dependencies(copy_ue4 copy_files)
+
+# do the copying
+foreach( file_i ${HEXCOM_LIBS})
+    add_custom_command(
+            TARGET copy_files
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND}
+            ARGS -E copy ${file_i} ${hexcom_install_dir}
+    )
+endforeach( file_i )
+
+foreach( file_i ${HEXCOM_LIBS})
+    add_custom_command(
+            TARGET copy_ue4
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND}
+            ARGS -E copy ${file_i} ${UNREAL_PROJECT_DIR}Plugins/HexWorldCreator/Source/ThirdParty/HexWorldCreatorLibrary/${UNREAL_PLATFORM}/Release/
+    )
+endforeach( file_i )
+
+foreach( file_i ${HEXCOM_INCLUDE_FILES})
+    add_custom_command(
+            TARGET copy_headers
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND}
+            ARGS -E copy ${file_i} ${UNREAL_PROJECT_DIR}Plugins/HexWorldCreator/Source/ThirdParty/HexWorldCreatorLibrary/include/hexworld/
+    )
+endforeach( file_i )
+

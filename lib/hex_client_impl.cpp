@@ -1,15 +1,51 @@
 #include "hex_client_impl.h"
 #include "hexagon.pb.h"
 
+std::string root_certs =
+        "# Issuer: CN=GlobalSign O=GlobalSign OU=GlobalSign Root CA - R2\n"
+        "# Subject: CN=GlobalSign O=GlobalSign OU=GlobalSign Root CA - R2\n"
+        "# Label: \"GlobalSign Root CA - R2\"\n"
+        "# Serial: 4835703278459682885658125\n"
+        "# MD5 Fingerprint: 94:14:77:7e:3e:5e:fd:8f:30:bd:41:b0:cf:e7:d0:30\n"
+        "# SHA1 Fingerprint: 75:e0:ab:b6:13:85:12:27:1c:04:f8:5f:dd:de:38:e4:b7:24:2e:fe\n"
+        "# SHA256 Fingerprint: ca:42:dd:41:74:5f:d0:b8:1e:b9:02:36:2c:f9:d8:bf:71:9d:a1:bd:1b:1e:fc:94:6f:5b:4c:99:f4:2c:1b:9e\n"
+        "-----BEGIN CERTIFICATE-----\n"
+        "MIIDujCCAqKgAwIBAgILBAAAAAABD4Ym5g0wDQYJKoZIhvcNAQEFBQAwTDEgMB4G\n"
+        "A1UECxMXR2xvYmFsU2lnbiBSb290IENBIC0gUjIxEzARBgNVBAoTCkdsb2JhbFNp\n"
+        "Z24xEzARBgNVBAMTCkdsb2JhbFNpZ24wHhcNMDYxMjE1MDgwMDAwWhcNMjExMjE1\n"
+        "MDgwMDAwWjBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMjETMBEG\n"
+        "A1UEChMKR2xvYmFsU2lnbjETMBEGA1UEAxMKR2xvYmFsU2lnbjCCASIwDQYJKoZI\n"
+        "hvcNAQEBBQADggEPADCCAQoCggEBAKbPJA6+Lm8omUVCxKs+IVSbC9N/hHD6ErPL\n"
+        "v4dfxn+G07IwXNb9rfF73OX4YJYJkhD10FPe+3t+c4isUoh7SqbKSaZeqKeMWhG8\n"
+        "eoLrvozps6yWJQeXSpkqBy+0Hne/ig+1AnwblrjFuTosvNYSuetZfeLQBoZfXklq\n"
+        "tTleiDTsvHgMCJiEbKjNS7SgfQx5TfC4LcshytVsW33hoCmEofnTlEnLJGKRILzd\n"
+        "C9XZzPnqJworc5HGnRusyMvo4KD0L5CLTfuwNhv2GXqF4G3yYROIXJ/gkwpRl4pa\n"
+        "zq+r1feqCapgvdzZX99yqWATXgAByUr6P6TqBwMhAo6CygPCm48CAwEAAaOBnDCB\n"
+        "mTAOBgNVHQ8BAf8EBAMCAQYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUm+IH\n"
+        "V2ccHsBqBt5ZtJot39wZhi4wNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5n\n"
+        "bG9iYWxzaWduLm5ldC9yb290LXIyLmNybDAfBgNVHSMEGDAWgBSb4gdXZxwewGoG\n"
+        "3lm0mi3f3BmGLjANBgkqhkiG9w0BAQUFAAOCAQEAmYFThxxol4aR7OBKuEQLq4Gs\n"
+        "J0/WwbgcQ3izDJr86iw8bmEbTUsp9Z8FHSbBuOmDAGJFtqkIk7mpM0sYmsL4h4hO\n"
+        "291xNBrBVNpGP+DTKqttVCL1OmLNIG+6KYnX3ZHu01yiPqFbQfXf5WRDLenVOavS\n"
+        "ot+3i9DAgBkcRcAtjOj4LaR0VknFBbVPFd5uRHg5h6h+u/N5GJG79G+dwfCMNYxd\n"
+        "AfvDbbnvRG15RjF+Cv6pgsH/76tuIMRQyV+dTZsXjAzlAcmgQWpzU/qlULRuJQ/7\n"
+        "TBj0/VLZjmmx6BEP3ojY+x1J96relc8geMJgEtslQIxq/H5COEBkEveegeGTLg==\n"
+        "-----END CERTIFICATE-----\n";
+
 
 HexagonClientImpl::HexagonClientImpl() {
-    auto channel_creds = grpc::SslCredentials(grpc::SslCredentialsOptions());
-    channel = grpc::CreateChannel("localhost:500541", channel_creds);
+    auto options = grpc::SslCredentialsOptions();
+    options.pem_root_certs = root_certs;
+
+    auto channel_creds = grpc::SslCredentials(options);
+    channel = grpc::CreateChannel("127.0.0.1:8080", channel_creds);
 }
 
 HexagonClientImpl::HexagonClientImpl(std::string server_address) {
-    grpc::SslCredentialsOptions sslOpts{};
-    channel = grpc::CreateChannel(server_address, grpc::SslCredentials(sslOpts));
+    auto options = grpc::SslCredentialsOptions();
+    options.pem_root_certs = root_certs;
+
+    channel = grpc::CreateChannel(server_address, grpc::SslCredentials(options));
 //    channel = grpc::CreateChannel(server_address, grpc::InsecureChannelCredentials());
 }
 

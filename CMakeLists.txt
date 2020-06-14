@@ -4,7 +4,7 @@ project(HexCom)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-IF(UNIX)
+IF(UNIX AND NOT APPLE)
     find_package(LLVM 9.0 REQUIRED CONFIG)
     message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
     message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")

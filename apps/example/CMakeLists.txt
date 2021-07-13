@@ -1,4 +1,4 @@
-set(Boost_DEBUG OFF)
+set(Boost_DEBUG ON)
 set(BUILD_TESTING OFF)
 set(Boost_USE_MULTITHREADED ON)
 

@@ -25,6 +25,8 @@ IF (WIN32)
     set(Boost_USE_STATIC_LIBS ON)
     set(Boost_COMPILER -vc141)
     set(Boost_ARCHITECTURE -x64)
+    # ASM compile fails for 64 bit builds
+    set(OPENSSL_NO_ASM ON)
 ENDIF()
 
 set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE INTERNAL "No dev warnings")

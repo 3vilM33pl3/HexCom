@@ -41,12 +41,15 @@ HexagonClientImpl::HexagonClientImpl() {
     channel = grpc::CreateChannel("127.0.0.1:8080", channel_creds);
 }
 
-HexagonClientImpl::HexagonClientImpl(std::string server_address) {
+HexagonClientImpl::HexagonClientImpl(std::string server_address, bool ConnectEncrypted) {
     auto options = grpc::SslCredentialsOptions();
     options.pem_root_certs = root_certs;
 
-    channel = grpc::CreateChannel(server_address, grpc::SslCredentials(options));
-//    channel = grpc::CreateChannel(server_address, grpc::InsecureChannelCredentials());
+    if (ConnectEncrypted) {
+        channel = grpc::CreateChannel(server_address, grpc::SslCredentials(options));
+    } else {
+        channel = grpc::CreateChannel(server_address, grpc::InsecureChannelCredentials());
+    }
 }
 
 

@@ -9,7 +9,7 @@ class HexagonClientImpl;
 class HexagonClient {
 public:
     HexagonClient();
-    HexagonClient(std::string server_address);
+    HexagonClient(const std::string server_address, bool ConnectEncrypted);
 
     hw_conn_state ConnectToServer();
 

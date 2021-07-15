@@ -5,8 +5,8 @@ HexagonClient::HexagonClient() {
     impl = new HexagonClientImpl();
 }
 
-HexagonClient::HexagonClient(const std::string server_address) {
-    impl = new HexagonClientImpl(server_address);
+HexagonClient::HexagonClient(const std::string server_address, bool ConnectEncrypted) {
+    impl = new HexagonClientImpl(server_address, ConnectEncrypted);
 }
 
 hw_conn_state HexagonClient::ConnectToServer() {

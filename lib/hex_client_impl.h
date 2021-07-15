@@ -21,7 +21,7 @@ class HexagonClientImpl {
 public:
     HexagonClientImpl();
 
-    HexagonClientImpl(std::string server_address);
+    HexagonClientImpl(std::string server_address, bool ConnectEncrypted);
 
     hw_conn_state ConnectToServer();
 

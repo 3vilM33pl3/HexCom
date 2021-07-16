@@ -7,24 +7,30 @@ namespace po = boost::program_options;
 int main(int ac, char** av) {
     std::string ServerAddress;
     bool EncryptedConnection;
-    po::options_description desc("Hexagon client options");
-    desc.add_options()
-            ("help", "help message")
-            ("address", po::value<std::string>(&ServerAddress)->default_value("127.0.0.1:8080"),
-             "address to connect to [ip:port]")
-            ("ssl",po::value<bool>(&EncryptedConnection)->default_value(true), "Connect encrypted");
 
-    po::variables_map vm;
-    po::store(po::parse_command_line(ac, av, desc), vm);
-    po::notify(vm);
+    try {
+        po::options_description desc("Hexagon client options");
+        desc.add_options()
+                ("help", "help message")
+                ("address", po::value<std::string>(&ServerAddress)->default_value("127.0.0.1:8080"),
+                 "address to connect to [ip:port]")
+                ("ssl", po::value<bool>(&EncryptedConnection)->default_value(true), "Connect encrypted");
 
-    if (vm.count("help")) {
-        std::cout << desc << "\n";
+        po::variables_map vm;
+        po::store(po::parse_command_line(ac, av, desc), vm);
+        po::notify(vm);
+
+        if (vm.count("help")) {
+            std::cout << desc << std::endl;
+            return 1;
+        }
+
+        if(vm.count("address")) {
+            ServerAddress = vm["address"].as<std::string>();
+        }
+    } catch(po::error& error) {
+        std::cout << error.what() << std::endl;
         return 1;
-    }
-
-    if(vm.count("address")) {
-        ServerAddress = vm["address"].as<std::string>();
     }
 
     HexagonClient hc(ServerAddress, EncryptedConnection);

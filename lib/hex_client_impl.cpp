@@ -109,13 +109,14 @@ hexagon::Hex HexagonClientImpl::Convert2Proto(const Hexagon* x) {
 }
 
 
-std::vector<Hexagon> HexagonClientImpl::GetHexagonRing(const Hexagon *hex, const int64_t radius) {
+std::vector<Hexagon> HexagonClientImpl::GetHexagonRing(const Hexagon *hex, const int64_t radius, bool fill) {
     std::vector<Hexagon> result;
     HexagonRingRequest request;
 
     auto ha = request.mutable_ha();
     ha->CopyFrom(Convert2Proto(hex));
     request.set_radius(radius);
+    request.set_fill(fill);
 
 
 

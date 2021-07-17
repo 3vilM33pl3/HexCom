@@ -27,7 +27,7 @@ public:
 
     hw_conn_state GetConnectionState();
 
-    std::vector<Hexagon> GetHexagonRing(const Hexagon* hex, const int64_t radius);
+    std::vector<Hexagon> GetHexagonRing(const Hexagon *hex, const int64_t radius, bool fill);
 
 private:
     std::shared_ptr<grpc::Channel> channel;

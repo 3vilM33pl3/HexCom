@@ -24,6 +24,7 @@ message ConversionRequest {
 message HexagonRingRequest {
     Hex ha = 1;
     int64 radius = 2;
+    bool fill = 3;
 }
 
 message HexAxialResponse {

@@ -4,8 +4,11 @@ struct Hexagon {
     int64_t X;
     int64_t Y;
     int64_t Z;
+    std::string Type;
+    std::string Direction;
 
-    Hexagon(int x_, int y_, int z_):X(x_), Y(y_), Z(z_) {};
+    Hexagon(int x_, int y_, int z_, std::string type_, std::string direction_)
+            :X(x_), Y(y_), Z(z_), Type(type_), Direction(direction_) {};
 };
 
 struct AxialCoordinates {

@@ -127,7 +127,7 @@ std::vector<Hexagon> HexagonClientImpl::GetHexagonRing(const Hexagon *hex, const
     if (status.ok()) {
 
         for(auto hexpb: response.hc()) {
-            result.push_back(Hexagon(hexpb.x(), hexpb.y(), hexpb.z()));
+            result.push_back(Hexagon(hexpb.x(), hexpb.y(), hexpb.z(), hexpb.type(), hexpb.direction()));
         }
     } else {
         std::cout << status.error_code() << ": " << status.error_message() << std::endl;

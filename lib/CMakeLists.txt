@@ -17,6 +17,7 @@ add_custom_command(
         OUTPUT "${PROTOBUF_SOURCE}" "${PROTOBUF_HEADER}" "${GRPC_SOURCE}" "${GRPC_HEADER}"
         COMMAND ${PROTOC_EXECUTABLE}
         ARGS --grpc_out="${CMAKE_CURRENT_BINARY_DIR}"
+        --descriptor_set_out=api_descriptor.pb
         --cpp_out="${CMAKE_CURRENT_BINARY_DIR}"
         -I "${PROTO_PATH}"
         --plugin=protoc-gen-grpc="${GRPC_CPP_PLUGIN_EXECUTABLE}"

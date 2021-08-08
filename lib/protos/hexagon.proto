@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package hexagon;
+package endpoints.hexworld.hexcloud;
 
 message Hex {
     int64 X = 1; //

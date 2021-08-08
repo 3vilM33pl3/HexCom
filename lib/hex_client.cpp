@@ -20,5 +20,3 @@ hw_conn_state HexagonClient::GetConnectionState() {
 std::vector<Hexagon> HexagonClient::GetHexagonRing(Hexagon *hex, const int64_t radius, bool fill) {
     return impl->GetHexagonRing(hex, radius, fill);
 }
-
-

@@ -1,5 +1,5 @@
+#include <hexagon.pb.h>
 #include "hex_client_impl.h"
-#include "hexagon.pb.h"
 
 std::string root_certs =
         "# Issuer: CN=GlobalSign O=GlobalSign OU=GlobalSign Root CA - R2\n"
@@ -98,8 +98,8 @@ hw_conn_state HexagonClientImpl::GetConnectionState() {
     }
 }
 
-hexagon::Hex HexagonClientImpl::Convert2Proto(const Hexagon* x) {
-    hexagon::Hex pbhex;
+Hex HexagonClientImpl::Convert2Proto(const Hexagon* x) {
+    Hex pbhex;
     pbhex.set_x(x->X);
     pbhex.set_y(x->Y);
     pbhex.set_z(x->Z);

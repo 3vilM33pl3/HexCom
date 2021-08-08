@@ -1,0 +1,14 @@
+type: google.api.Service
+config_version: 3
+name: "*.apigateway.robot_motel.cloud.goog"
+title: API Gateway Cloud Run gRPC hexcloud
+apis:
+  - name: endpoints.hexworld.hexcloud.HexagonService
+usage:
+  rules:
+    - selector: endpoints.hexworld.hexcloud.HexagonService.GetHexagonRing
+      allow_unregistered_calls: true
+backend:
+  rules:
+    - selector: "*"
+      address: grpcs://hexcloud-j6feiuh7aa-ue.a.run.app

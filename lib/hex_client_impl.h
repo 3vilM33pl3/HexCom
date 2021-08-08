@@ -8,14 +8,15 @@
 #include "hex_client_impl.h"
 #include "hexagon.grpc.pb.h"
 
-using hexagon::HexagonService;
-using hexagon::ConversionRequest;
-using hexagon::HexAxialResponse;
-using hexagon::HexagonRingRequest;
-using hexagon::HexCubeResponse;
-using hexagon::Hex;
-using hexagon::HexAxial;
-using hexagon::HexagonService;
+
+using endpoints::hexworld::hexcloud::HexagonService;
+using endpoints::hexworld::hexcloud::ConversionRequest;
+using endpoints::hexworld::hexcloud::HexAxialResponse;
+using endpoints::hexworld::hexcloud::HexagonRingRequest;
+using endpoints::hexworld::hexcloud::HexCubeResponse;
+using endpoints::hexworld::hexcloud::Hex;
+using endpoints::hexworld::hexcloud::HexAxial;
+using endpoints::hexworld::hexcloud::HexagonService;
 
 class HexagonClientImpl {
 public:

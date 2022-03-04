@@ -8,15 +8,14 @@
 #include "hex_client_impl.h"
 #include "hexagon.grpc.pb.h"
 
-
 using endpoints::hexworld::hexcloud::HexagonService;
-using endpoints::hexworld::hexcloud::ConversionRequest;
-using endpoints::hexworld::hexcloud::HexAxialResponse;
-using endpoints::hexworld::hexcloud::HexagonRingRequest;
-using endpoints::hexworld::hexcloud::HexCubeResponse;
 using endpoints::hexworld::hexcloud::Hex;
-using endpoints::hexworld::hexcloud::HexAxial;
-using endpoints::hexworld::hexcloud::HexagonService;
+using endpoints::hexworld::hexcloud::HexReference;
+using endpoints::hexworld::hexcloud::HexRefList;
+using endpoints::hexworld::hexcloud::HexList;
+using endpoints::hexworld::hexcloud::HexagonGetRequest;
+using endpoints::hexworld::hexcloud::Status;
+using endpoints::hexworld::hexcloud::Result;
 
 class HexagonClientImpl {
 public:
@@ -28,7 +27,7 @@ public:
 
     hw_conn_state GetConnectionState();
 
-    std::vector<Hexagon> GetHexagonRing(const Hexagon *hex, const int64_t radius, bool fill);
+    std::vector<Hexagon> MapGet(const Hexagon *hex, const int64_t radius, bool fill);
 
 private:
     std::shared_ptr<grpc::Channel> channel;

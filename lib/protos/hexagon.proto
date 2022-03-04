@@ -2,39 +2,64 @@ syntax = "proto3";
 
 package endpoints.hexworld.hexcloud;
 
+message Empty {}
+
 message Hex {
-    int64 X = 1; //
+    int64 X = 1;
     int64 Y = 2;
     int64 Z = 3;
-    string Type = 4;
-    string Direction = 5;
+    Direction Direction = 4;
+    string Reference = 5;
 }
 
-message HexAxial {
-    int64 U = 1;
-    int64 V = 2;
-    string Type = 3;
-    string Direction = 4;
+enum Direction {
+    N = 0;
+    NE = 1;
+    E = 2;
+    SE = 3;
+    S = 4;
+    SW = 5;
+    W = 6;
+    NW = 7;
 }
 
-message ConversionRequest {
-    repeated Hex hc = 1;
+message HexReference {
+    string Ref = 1;
 }
 
-message HexagonRingRequest {
-    Hex ha = 1;
+message HexRefList {
+    repeated HexReference ref = 1;
+}
+
+message HexList {
+    repeated Hex hex = 1;
+}
+
+message HexagonGetRequest {
+    Hex hex = 1;
     int64 radius = 2;
     bool fill = 3;
 }
 
-message HexAxialResponse {
-    repeated HexAxial ha = 1;
+message Status {
+    string msg = 1;
 }
 
-message HexCubeResponse {
-    repeated Hex hc = 1;
+message Result {
+    bool success = 1;
 }
 
 service HexagonService {
-    rpc GetHexagonRing(HexagonRingRequest) returns (HexCubeResponse);
+    rpc RepoAddHexagons(HexRefList) returns(Result);
+    rpc RepoDelHexagons(HexRefList) returns(Result);
+
+    rpc MapAdd(Hex) returns (Result);
+    rpc MapGet(HexagonGetRequest) returns (HexList);
+    rpc MapRemove(HexList) returns(Result);
+
+    rpc HexagonInfo(Hex) returns(Hex);
+
+    rpc GetStatusServer(Empty) returns(Status);
+    rpc GetStatusStorage(Empty) returns(Status);
+    rpc GetStatusClients(Empty) returns(Status);
 }

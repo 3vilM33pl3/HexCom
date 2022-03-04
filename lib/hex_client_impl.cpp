@@ -103,31 +103,41 @@ Hex HexagonClientImpl::Convert2Proto(const Hexagon* x) {
     pbhex.set_x(x->X);
     pbhex.set_y(x->Y);
     pbhex.set_z(x->Z);
-    pbhex.set_direction("NW");
-    pbhex.set_type("straight");
+    pbhex.set_direction(endpoints::hexworld::hexcloud::N);
+    pbhex.set_reference("1000-0000-0000-0000");
     return pbhex;
 }
 
+constexpr Direction ConvertEnum(endpoints::hexworld::hexcloud::Direction direction) {
+    switch (direction) {
+        case endpoints::hexworld::hexcloud::N: return Direction::N;
+        case endpoints::hexworld::hexcloud::NE: return Direction::NE;
+        case endpoints::hexworld::hexcloud::E: return Direction::E;
+        case endpoints::hexworld::hexcloud::SE: return Direction::SE;
+        case endpoints::hexworld::hexcloud::S: return Direction::S;
+        case endpoints::hexworld::hexcloud::SW: return Direction::SW;
+        case endpoints::hexworld::hexcloud::W: return Direction::W;
+        case endpoints::hexworld::hexcloud::NW: return Direction::NW;
+    }
+}
 
-std::vector<Hexagon> HexagonClientImpl::GetHexagonRing(const Hexagon *hex, const int64_t radius, bool fill) {
+std::vector<Hexagon> HexagonClientImpl::MapGet(const Hexagon *hex, const int64_t radius, bool fill) {
     std::vector<Hexagon> result;
-    HexagonRingRequest request;
+    HexagonGetRequest request;
 
-    auto ha = request.mutable_ha();
-    ha->CopyFrom(Convert2Proto(hex));
+    auto pHex = request.mutable_hex();
+    pHex->CopyFrom(Convert2Proto(hex));
     request.set_radius(radius);
     request.set_fill(fill);
 
-
-
     grpc::ClientContext context;
-    HexCubeResponse response;
+    endpoints::hexworld::hexcloud::HexList hexList;
 
-    auto status = stub->GetHexagonRing(&context, request, &response);
+    auto status = stub->MapGet(&context, request, &hexList);
     if (status.ok()) {
 
-        for(auto hexpb: response.hc()) {
-            result.push_back(Hexagon(hexpb.x(), hexpb.y(), hexpb.z(), hexpb.type(), hexpb.direction()));
+        for(auto hexpb: hexList.hex()) {
+            result.push_back(Hexagon(hexpb.x(), hexpb.y(), hexpb.z(), hexpb.reference(), ConvertEnum(hexpb.direction())));
         }
     } else {
         std::cout << status.error_code() << ": " << status.error_message() << std::endl;

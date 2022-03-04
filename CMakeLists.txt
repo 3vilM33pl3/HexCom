@@ -96,10 +96,10 @@ if(WIN32)
             ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/gpr.lib 
             ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/grpc.lib 
             ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/grpc++.lib 
-            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/protobuf/libprotobuf.lib 
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/protobuf/libprotobufd.lib
             ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/boringssl-with-bazel/ssl.lib 
             ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/upb.lib 
-            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/zlib/zlibstatic.lib
+            ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/zlib/zlibstaticd.lib
             ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/base/absl_base.lib
             ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/numeric/absl_int128.lib
             ${CMAKE_CURRENT_BINARY_DIR}/_deps/grpc-build/third_party/abseil-cpp/absl/base/absl_raw_logging_internal.lib

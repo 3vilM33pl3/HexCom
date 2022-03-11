@@ -17,14 +17,9 @@ IF (WIN32)
 ENDIF()
 
 find_package(Boost REQUIRED COMPONENTS program_options)
+find_package(cli CONFIG REQUIRED)
 
-FetchContent_Declare(
-        cli
-        GIT_REPOSITORY  https://github.com/daniele77/cli.git
-        GIT_TAG         v1.1.1
-)
-FetchContent_MakeAvailable(cli)
 
 add_executable(hexworld_client hexworld_clientcli.cpp)
 target_include_directories(hexworld_client PUBLIC ../../include)
-target_link_libraries(hexworld_client hex_client_lib Boost::program_options cli)
+target_link_libraries(hexworld_client hex_client_lib Boost::boost Boost::program_options cli::cli)

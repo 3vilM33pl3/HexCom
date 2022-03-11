@@ -21,28 +21,20 @@ IF (WIN32)
     #    cmake -DBOOST_ROOT=C:/hostedtoolcache/windows/Boost/1.69.0
     #    set(BOOST_ROOT C:/hostedtoolcache/windows/Boost/1.69.0)
     add_definitions(/D_WIN32_WINNT=0x0601)
-    set(Boost_NO_SYSTEM_PATHS ON)
-    set(Boost_USE_STATIC_LIBS ON)
-    set(Boost_COMPILER -vc141)
-    set(Boost_ARCHITECTURE -x64)
+#    set(Boost_NO_SYSTEM_PATHS ON)
+#    set(Boost_USE_STATIC_LIBS ON)
+#    set(Boost_COMPILER -vc142)
+#    set(Boost_ARCHITECTURE -x64)
     # ASM compile fails for 64 bit builds
     set(OPENSSL_NO_ASM ON)
 ENDIF()
 
 set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE INTERNAL "No dev warnings")
 
-include(FetchContent)
-
-FetchContent_Declare(
-        grpc
-        GIT_REPOSITORY https://github.com/grpc/grpc.git
-        GIT_TAG        v1.29.1)
-FetchContent_MakeAvailable(grpc)
-
-IF(MSVC)
-#    SET(CMAKE_CXX_FLAGS "/EHsc -wd5039 -wd4577")
-    TARGET_COMPILE_OPTIONS(ssl PRIVATE /EHsc -wd5039 -wd4577)
-ENDIF()
+#IF(MSVC)
+##    SET(CMAKE_CXX_FLAGS "/EHsc -wd5039 -wd4577")
+#    TARGET_COMPILE_OPTIONS(ssl PRIVATE /EHsc -wd5039 -wd4577)
+#ENDIF()
 
 set(gRPC_BUILD_GRPC_CPP_PLUGIN ON)
 set(gRPC_BUILD_GRPC_CSHARP_PLUGIN OFF)
@@ -54,6 +46,9 @@ set(gRPC_BUILD_GRPC_RUBY_PLUGIN  OFF)
 set(gRPC)
 
 set(gRPC_USE_PROTO_LITE OFF)
+
+find_package(grpc CONFIG REQUIRED)
+find_package(protobuf CONFIG REQUIRED)
 
 add_subdirectory(lib)
 add_subdirectory(apps/example)

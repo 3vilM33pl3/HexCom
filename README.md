@@ -1,5 +1,14 @@
 Hexcom is the client library which can be used to communicate with the [`hexcloud`](https://github.com/3vilM33pl3/hexcloud) backend.
 
+# VCPKG
+
+`vcpkg install grpc --triplet x64-windows`
+
+`vcpkg install protobuf --triplet x64-windows`
+
+`vcpkg install boost --triplet x64-windows`
+
+
 ## Compile
 ### Windows
 Make sure your toolchain is configured for 64 bit builds. 

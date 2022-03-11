@@ -3,6 +3,7 @@ cmake-build*/
 *.iws
 out/
 .idea_modules/
+.cmake/
 
 ### CMake template
 CMakeLists.txt.user

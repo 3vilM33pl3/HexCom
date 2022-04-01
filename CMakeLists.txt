@@ -53,9 +53,7 @@ find_package(protobuf CONFIG REQUIRED)
 add_subdirectory(lib)
 add_subdirectory(apps/example)
 
-add_custom_target(create_zip
-        COMMAND tar -cvf archive.zip -C ${CMAKE_CURRENT_BINARY_DIR}/hexcom-install/ .
-        )
+add_custom_target(create_zip COMMAND tar -cvf archive.zip -C ${CMAKE_CURRENT_BINARY_DIR}/hexcom-install/ .)
 
 #install(FILES
 #        ${CMAKE_CURRENT_BINARY_DIR}/lib/libhex_client_lib.a
@@ -164,3 +162,32 @@ foreach( file_i ${HEXCOM_INCLUDE_FILES})
     )
 endforeach( file_i )
 
+set(MY_DEPENDENCY_PATHS ./lib)
+#
+## Transfer the value of ${MY_DEPENDENCY_PATHS} into the install script
+install(CODE "set(MY_DEPENDENCY_PATHS \"${MY_DEPENDENCY_PATHS}\")")
+
+install(CODE [[
+  file(GET_RUNTIME_DEPENDENCIES
+    LIBRARIES $<TARGET_FILE:hex_client_lib>
+    EXECUTABLES $<TARGET_FILE:hexworld_client>
+    RESOLVED_DEPENDENCIES_VAR _r_deps
+    UNRESOLVED_DEPENDENCIES_VAR _u_deps
+#    DIRECTORIES ${MY_DEPENDENCY_PATHS}
+  )
+  foreach(_file ${_r_deps})
+    file(INSTALL
+      DESTINATION "${CMAKE_INSTALL_PREFIX}/lib"
+      TYPE SHARED_LIBRARY
+      FOLLOW_SYMLINK_CHAIN
+      FILES "${_file}"
+    )
+  endforeach()
+  list(LENGTH _u_deps _u_length)
+  if("${_u_length}" GREATER 0)
+    message(WARNING "Unresolved dependencies detected!")
+  endif()
+  foreach (lib_conflict ${_u_deps})
+    message(STATUS "${lib_conflict} found at: ${conflicts_${lib_conflict}}")
+  endforeach()
+]] DESTINATION ${hexcom_install_dir})

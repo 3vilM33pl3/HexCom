@@ -25,3 +25,4 @@ target_include_directories(hex_client_lib PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_include_directories(hex_client_lib PUBLIC ../include)
 
 target_link_libraries(hex_client_lib PRIVATE gRPC::gpr gRPC::upb gRPC::grpc gRPC::grpc++ protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite ${llvm_libs})
+

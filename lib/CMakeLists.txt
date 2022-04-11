@@ -1,7 +1,6 @@
 
 get_filename_component(PROTO_FILE ${CMAKE_CURRENT_SOURCE_DIR}/protos/hexagon.proto ABSOLUTE)
 get_filename_component(PROTO_PATH "${PROTO_FILE}" PATH)
-get_target_property(grpc_cpp_plugin_location gRPC::grpc_cpp_plugin LOCATION)
 
 set(PROTOBUF_SOURCE "${CMAKE_CURRENT_BINARY_DIR}/hexagon.pb.cc")
 set(PROTOBUF_HEADER "${CMAKE_CURRENT_BINARY_DIR}/hexagon.pb.h")
@@ -15,7 +14,7 @@ add_custom_command(
         --descriptor_set_out=api_descriptor.pb
         --cpp_out="${CMAKE_CURRENT_BINARY_DIR}"
         -I "${PROTO_PATH}"
-        --plugin=protoc-gen-grpc=${grpc_cpp_plugin_location}
+        --plugin=protoc-gen-grpc=$<TARGET_FILE:grpc_cpp_plugin>
         "${PROTO_FILE}"
         DEPENDS "${PROTO_FILE}")
 
@@ -24,5 +23,5 @@ add_library(hex_client_lib STATIC hex_client.cpp hex_client_impl.cpp hex_client_
 target_include_directories(hex_client_lib PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 target_include_directories(hex_client_lib PUBLIC ../include)
 
-target_link_libraries(hex_client_lib PRIVATE gRPC::gpr gRPC::upb gRPC::grpc gRPC::grpc++ protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite ${llvm_libs})
+target_link_libraries(hex_client_lib PRIVATE grpc++ protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite ${llvm_libs})
 

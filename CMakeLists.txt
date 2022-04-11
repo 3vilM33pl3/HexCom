@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(HexCom)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS ON)
 
 IF(UNIX AND NOT APPLE)
@@ -35,6 +35,7 @@ set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE INTERNAL "No dev warnings")
 ##    SET(CMAKE_CXX_FLAGS "/EHsc -wd5039 -wd4577")
 #    TARGET_COMPILE_OPTIONS(ssl PRIVATE /EHsc -wd5039 -wd4577)
 #ENDIF()
+set(UE_ROOT "F:/Epic Games/Games/UE_5.0")
 
 set(gRPC_BUILD_GRPC_CPP_PLUGIN ON)
 set(gRPC_BUILD_GRPC_CSHARP_PLUGIN OFF)
@@ -43,12 +44,32 @@ set(gRPC_BUILD_GRPC_OBJECTIVE_C_PLUGIN OFF)
 set(gRPC_BUILD_GRPC_PHP_PLUGIN OFF)
 set(gRPC_BUILD_GRPC_PYTHON_PLUGIN OFF)
 set(gRPC_BUILD_GRPC_RUBY_PLUGIN  OFF)
+set(gRPC_ZLIB_PROVIDER package)
+set(ZLIB_INCLUDE_DIR "${UE_ROOT}/Engine/Source/ThirdParty/zlib/v1.2.8/include/Win64/VS2015")
+set(ZLIB_LIBRARY_DEBUG "${UE_ROOT}/Engine/Source/ThirdParty/zlib/v1.2.8/lib/Win64/VS2015/Release/zlibstatic.lib")
+set(ZLIB_LIBRARY_RELEASE "${UE_ROOT}/Engine/Source/ThirdParty/zlib/v1.2.8/lib/Win64/VS2015/Release/zlibstatic.lib")
+set(gRPC_SSL_PROVIDER package)
+set(LIB_EAY_LIBRARY_DEBUG "${UE_ROOT}/Engine/Source/ThirdParty/OpenSSL/1.1.1k/Lib/Win64/VS2015/Debug/libcrypto.lib")
+set(LIB_EAY_LIBRARY_RELEASE "${UE_ROOT}/Engine/Source/ThirdParty/OpenSSL/1.1.1k/Lib/Win64/VS2015/Release/libcrypto.lib")
+set(LIB_EAY_DEBUG "${UE_ROOT}/Engine/Source/ThirdParty/OpenSSL/1.1.1k/Lib/Win64/VS2015/Debug/libcrypto.lib")
+set(LIB_EAY_RELEASE "${UE_ROOT}/Engine/Source/ThirdParty/OpenSSL/1.1.1k/Lib/Win64/VS2015/Release/libcrypto.lib")
+set(OPENSSL_INCLUDE_DIR "${UE_ROOT}/Engine/Source/ThirdParty/OpenSSL/1.1.1k/include/Win64/VS2015")
+set(SSL_EAY_DEBUG "${UE_ROOT}/Engine/Source/ThirdParty/OpenSSL/1.1.1k/Lib/Win64/VS2015/Debug/libssl.lib")
+set(SSL_EAY_LIBRARY_DEBUG "${UE_ROOT}/Engine/Source/ThirdParty/OpenSSL/1.1.1k/Lib/Win64/VS2015/Debug/libssl.lib")
+set(SSL_EAY_LIBRARY_RELEASE "${UE_ROOT}/Engine/Source/ThirdParty/OpenSSL/1.1.1k/Lib/Win64/VS2015/Release/libssl.lib")
+set(SSL_EAY_RELEASE "${UE_ROOT}/Engine/Source/ThirdParty/OpenSSL/1.1.1k/Lib/Win64/VS2015/Release/libssl.lib")
 set(gRPC)
 
 set(gRPC_USE_PROTO_LITE OFF)
 
-find_package(grpc CONFIG REQUIRED)
-find_package(protobuf CONFIG REQUIRED)
+include(FetchContent)
+FetchContent_Declare(
+        gRPC
+        GIT_REPOSITORY https://github.com/grpc/grpc
+        GIT_TAG        v1.41.0
+)
+set(FETCHCONTENT_QUIET OFF)
+FetchContent_MakeAvailable(gRPC)
 
 add_subdirectory(lib)
 add_subdirectory(apps/example)

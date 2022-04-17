@@ -12,22 +12,15 @@ Hexcom is the client library which can be used to communicate with the [`hexclou
 
 ## Compile
 ### Windows
-Make sure your toolchain is configured for 64 bit builds. 
-#### BOOST
-Install Boost with the Windows installer found [here](https://sourceforge.net/projects/boost/files/boost-binaries/1.69.0/).
-(Download `boost_1_69_0-msvc-14.1-64.exe` for 64 bit builds) 
+Make sure your toolchain is configured for 64 bit builds.
+### Dependencies
+Install dependencies with [vcpkg](https://vcpkg.io/en/index.html) manager:
 
-Point to Boost by setting BOOST_ROOT variable:
+`vcpkg install grpc --triplet x64-windows`
 
-    cmake -DBOOST_ROOT=C:/local/boost_1_69_0
+`vcpkg install protobuf --triplet x64-windows`
 
-On the windows instance of Github Actions Boost is located 
-
-    C:/hostedtoolcache/windows/Boost/1.69.0
-
-Run cmake with:
-
-    cmake -DBOOST_ROOT=C:/hostedtoolcache/windows/Boost/1.69.0
+`vcpkg install boost --triplet x64-windows`
 
 #### Ninja (Optional but recommended)
 Ninja dramatically accelerates building c++ programs. 
@@ -63,5 +56,25 @@ After installing Chocolatey run this command in Powershell (run as Administrator
 
     choco install yasm    
 
+## MacOS
+
+
+### Install tools
+Install dependencies with [vcpkg](https://vcpkg.io/en/index.html) manager. 
+vcpkg can be installed with [`homebrew`](https://brew.sh/): 
+
+`brew install vcpkg`
+
+### Install dependencies 
+`vcpkg install protobuf cli boost-program-options`
+
+### CMake flags
+```shell
+cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake
+```
+
 ## Run
-    hexworld_client --address [backend address]
+Without encryption on `localhost:8080`:
+    `hexworld_client --nossl`
+With encryption and specific server:
+    `hexworld_client --address [address]`

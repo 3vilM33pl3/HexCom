@@ -1,42 +1,16 @@
 #include <iostream>
-#include <boost/program_options.hpp>
 #include <hexworld/hex_client.h>
+#include "absl/flags/flag.h"
+#include "absl/flags/parse.h"
 
-namespace po = boost::program_options;
+ABSL_FLAG(std::string, address, "127.0.0.1:8080", "address to connect to [ip:port]");
+ABSL_FLAG(bool, ssl, true, "connect encrypted");
 
 int main(int ac, char** av) {
-    std::string ServerAddress;
-    bool EncryptedConnection = true;
+    absl::ParseCommandLine(ac, av);
 
-    try {
-        po::options_description desc("Hexagon client options");
-        desc.add_options()
-                ("help", "help message")
-                ("address", po::value<std::string>(&ServerAddress)->default_value("127.0.0.1:8080"),
-                 "address to connect to [ip:port]")
-                ("nossl","connect unencrypted");
-
-        po::variables_map vm;
-        po::store(po::parse_command_line(ac, av, desc), vm);
-        po::notify(vm);
-
-        if (vm.count("help")) {
-            std::cout << desc << std::endl;
-            return 1;
-        }
-
-        if(vm.count("address")) {
-            ServerAddress = vm["address"].as<std::string>();
-        }
-
-        if(vm.count("nossl")) {
-            EncryptedConnection = false;
-        }
-
-    } catch(po::error& error) {
-        std::cout << error.what() << std::endl;
-        return 1;
-    }
+    std::string ServerAddress = absl::GetFlag(FLAGS_address);
+    bool EncryptedConnection = absl::GetFlag(FLAGS_ssl);
 
     HexagonClient hc(ServerAddress, EncryptedConnection);
     hc.ConnectToServer();

@@ -16,7 +16,7 @@ Make sure your toolchain is configured for 64 bit builds.
 ### Dependencies
 Install dependencies with [vcpkg](https://vcpkg.io/en/index.html) manager:
 
-`vcpkg install grpc --triplet x64-windows`
+    `vcpkg install grpc --triplet x64-windows`
 
 `vcpkg install protobuf --triplet x64-windows`
 

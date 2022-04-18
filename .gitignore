@@ -4,6 +4,7 @@ cmake-build*/
 out/
 .idea_modules/
 .cmake/
+.DS_Store
 
 ### CMake template
 CMakeLists.txt.user

@@ -4,12 +4,12 @@ package endpoints.hexworld.hexcloud;
 
 message Empty {}
 
-message Hex {
+message HexLocation {
     int64 X = 1;
     int64 Y = 2;
     int64 Z = 3;
     Direction Direction = 4;
-    string Reference = 5;
+    string HexID = 5;
 }
 
 enum Direction {
@@ -23,22 +23,27 @@ enum Direction {
     NW = 7;
 }
 
-message HexReference {
-    string Ref = 1;
+message HexInfo {
+    string ID = 1;
+    uint32 Exits = 2;
 }
 
-message HexRefList {
-    repeated HexReference ref = 1;
+message HexInfoList {
+    repeated HexInfo hexInfo = 1;
 }
 
-message HexList {
-    repeated Hex hex = 1;
+message HexLocationList {
+    repeated HexLocation hexLoc = 1;
 }
 
 message HexagonGetRequest {
-    Hex hex = 1;
+    HexLocation hexLoc = 1;
     int64 radius = 2;
     bool fill = 3;
+}
+
+message HexIDList {
+    repeated string HexID = 1;
 }
 
 message Status {
@@ -50,14 +55,14 @@ message Result {
 }
 
 service HexagonService {
-    rpc RepoAddHexagons(HexRefList) returns(Result);
-    rpc RepoDelHexagons(HexRefList) returns(Result);
+    rpc RepoAddHexagonInfo(HexInfoList) returns(Result);
+    rpc RepoDelHexagonInfo(HexIDList) returns(Result);
+    rpc RepoGetHexagonInfo(HexIDList) returns(HexInfoList);
+    rpc RepoGetAllHexagonInfo(Empty) returns(HexInfoList);
 
-    rpc MapAdd(Hex) returns (Result);
-    rpc MapGet(HexagonGetRequest) returns (HexList);
-    rpc MapRemove(HexList) returns(Result);
-
-    rpc HexagonInfo(Hex) returns(Hex);
+    rpc MapAdd(HexLocation) returns (Result);
+    rpc MapGet(HexagonGetRequest) returns (HexLocationList);
+    rpc MapRemove(HexLocationList) returns(Result);
 
     rpc GetStatusServer(Empty) returns(Status);
     rpc GetStatusStorage(Empty) returns(Status);

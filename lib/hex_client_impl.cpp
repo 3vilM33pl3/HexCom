@@ -98,13 +98,13 @@ hw_conn_state HexagonClientImpl::GetConnectionState() {
     }
 }
 
-Hex HexagonClientImpl::Convert2Proto(const Hexagon* x) {
-    Hex pbhex;
+HexLocation HexagonClientImpl::Convert2Proto(const Hexagon* x) {
+    HexLocation pbhex;
     pbhex.set_x(x->X);
     pbhex.set_y(x->Y);
     pbhex.set_z(x->Z);
     pbhex.set_direction(endpoints::hexworld::hexcloud::N);
-    pbhex.set_reference("1000-0000-0000-0000");
+    pbhex.set_hexid("1000-0000-0000-0000");
     return pbhex;
 }
 
@@ -125,19 +125,19 @@ std::vector<Hexagon> HexagonClientImpl::MapGet(const Hexagon *hex, const int64_t
     std::vector<Hexagon> result;
     HexagonGetRequest request;
 
-    auto pHex = request.mutable_hex();
+    auto pHex = request.mutable_hexloc();
     pHex->CopyFrom(Convert2Proto(hex));
     request.set_radius(radius);
     request.set_fill(fill);
 
     grpc::ClientContext context;
-    endpoints::hexworld::hexcloud::HexList hexList;
+    endpoints::hexworld::hexcloud::HexLocationList hexLocationList;
 
-    auto status = stub->MapGet(&context, request, &hexList);
+    auto status = stub->MapGet(&context, request, &hexLocationList);
     if (status.ok()) {
 
-        for(auto hexpb: hexList.hex()) {
-            result.push_back(Hexagon(hexpb.x(), hexpb.y(), hexpb.z(), hexpb.reference(), ConvertEnum(hexpb.direction())));
+        for(auto hexpb: hexLocationList.hexloc()) {
+            result.push_back(Hexagon(hexpb.x(), hexpb.y(), hexpb.z(), hexpb.hexid(), ConvertEnum(hexpb.direction())));
         }
     } else {
         std::cout << status.error_code() << ": " << status.error_message() << std::endl;

@@ -103,21 +103,21 @@ HexLocation HexagonClientImpl::Convert2Proto(const Hexagon* x) {
     pbhex.set_x(x->X);
     pbhex.set_y(x->Y);
     pbhex.set_z(x->Z);
-    pbhex.set_direction(endpoints::hexworld::hexcloud::N);
+    pbhex.set_direction(hexcloud::N);
     pbhex.set_hexid("1000-0000-0000-0000");
     return pbhex;
 }
 
-constexpr Direction ConvertEnum(endpoints::hexworld::hexcloud::Direction direction) {
+constexpr Direction ConvertEnum(hexcloud::Direction direction) {
     switch (direction) {
-        case endpoints::hexworld::hexcloud::N: return Direction::N;
-        case endpoints::hexworld::hexcloud::NE: return Direction::NE;
-        case endpoints::hexworld::hexcloud::E: return Direction::E;
-        case endpoints::hexworld::hexcloud::SE: return Direction::SE;
-        case endpoints::hexworld::hexcloud::S: return Direction::S;
-        case endpoints::hexworld::hexcloud::SW: return Direction::SW;
-        case endpoints::hexworld::hexcloud::W: return Direction::W;
-        case endpoints::hexworld::hexcloud::NW: return Direction::NW;
+        case hexcloud::N: return Direction::N;
+        case hexcloud::NE: return Direction::NE;
+        case hexcloud::E: return Direction::E;
+        case hexcloud::SE: return Direction::SE;
+        case hexcloud::S: return Direction::S;
+        case hexcloud::SW: return Direction::SW;
+        case hexcloud::W: return Direction::W;
+        case hexcloud::NW: return Direction::NW;
     }
 }
 
@@ -131,7 +131,7 @@ std::vector<Hexagon> HexagonClientImpl::MapGet(const Hexagon *hex, const int64_t
     request.set_fill(fill);
 
     grpc::ClientContext context;
-    endpoints::hexworld::hexcloud::HexLocationList hexLocationList;
+    hexcloud::HexLocationList hexLocationList;
 
     auto status = stub->MapGet(&context, request, &hexLocationList);
     if (status.ok()) {

@@ -8,15 +8,15 @@
 #include "hex_client_impl.h"
 #include "hexagon.grpc.pb.h"
 
-using endpoints::hexworld::hexcloud::HexagonService;
-using endpoints::hexworld::hexcloud::HexLocation;
-using endpoints::hexworld::hexcloud::HexInfo;
-using endpoints::hexworld::hexcloud::HexInfoList;
-using endpoints::hexworld::hexcloud::HexLocationList;
-using endpoints::hexworld::hexcloud::HexagonGetRequest;
-using endpoints::hexworld::hexcloud::HexIDList;
-using endpoints::hexworld::hexcloud::Status;
-using endpoints::hexworld::hexcloud::Result;
+using hexcloud::HexagonService;
+using hexcloud::HexLocation;
+using hexcloud::HexInfo;
+using hexcloud::HexInfoList;
+using hexcloud::HexLocationList;
+using hexcloud::HexagonGetRequest;
+using hexcloud::HexIDList;
+using hexcloud::Status;
+using hexcloud::Result;
 
 class HexagonClientImpl {
 public:

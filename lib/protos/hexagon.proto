@@ -8,24 +8,13 @@ message HexLocation {
     int64 X = 1;
     int64 Y = 2;
     int64 Z = 3;
-    Direction Direction = 4;
     string HexID = 5;
-}
-
-enum Direction {
-    N = 0;
-    NE = 1;
-    E = 2;
-    SE = 3;
-    S = 4;
-    SW = 5;
-    W = 6;
-    NW = 7;
+    map<string, string> Data = 6;
 }
 
 message HexInfo {
     string ID = 1;
-    uint32 Exits = 2;
+    map<string, string> Data = 3;
 }
 
 message HexInfoList {
@@ -46,6 +35,20 @@ message HexIDList {
     repeated string HexID = 1;
 }
 
+message HexIDData {
+    string HexID = 1;
+    string dataKey = 2;
+    string value = 3;
+}
+
+message HexLocData {
+    int64 X = 1;
+    int64 Y = 2;
+    int64 Z = 3;
+    string dataKey = 4;
+    string value = 5;
+}
+
 message Status {
     string msg = 1;
 }
@@ -56,13 +59,19 @@ message Result {
 
 service HexagonService {
     rpc RepoAddHexagonInfo(HexInfoList) returns(Result);
-    rpc RepoDelHexagonInfo(HexIDList) returns(Result);
     rpc RepoGetHexagonInfo(HexIDList) returns(HexInfoList);
+    rpc RepoGetHexagonInfoData(HexIDData) returns(HexIDData);
     rpc RepoGetAllHexagonInfo(Empty) returns(HexInfoList);
+    rpc RepoDelHexagonInfo(HexIDList) returns(Result);
+    rpc RepoDelHexagonInfoData(HexIDData) returns(Result);
 
-    rpc MapAdd(HexLocation) returns (Result);
+    rpc MapAdd(HexLocationList) returns (Result);
+    rpc MapAddData(HexLocData) returns (Result);
     rpc MapGet(HexagonGetRequest) returns (HexLocationList);
+    rpc MapUpdate(HexLocation) returns (Result);
+    rpc MapUpdateData(HexLocation) returns (Result);
     rpc MapRemove(HexLocationList) returns(Result);
+    rpc MapRemoveData(HexLocation) returns(Result);
 
     rpc GetStatusServer(Empty) returns(Status);
     rpc GetStatusStorage(Empty) returns(Status);

@@ -103,22 +103,8 @@ HexLocation HexagonClientImpl::Convert2Proto(const Hexagon* x) {
     pbhex.set_x(x->X);
     pbhex.set_y(x->Y);
     pbhex.set_z(x->Z);
-    pbhex.set_direction(hexcloud::N);
     pbhex.set_hexid("1000-0000-0000-0000");
     return pbhex;
-}
-
-constexpr Direction ConvertEnum(hexcloud::Direction direction) {
-    switch (direction) {
-        case hexcloud::N: return Direction::N;
-        case hexcloud::NE: return Direction::NE;
-        case hexcloud::E: return Direction::E;
-        case hexcloud::SE: return Direction::SE;
-        case hexcloud::S: return Direction::S;
-        case hexcloud::SW: return Direction::SW;
-        case hexcloud::W: return Direction::W;
-        case hexcloud::NW: return Direction::NW;
-    }
 }
 
 std::vector<Hexagon> HexagonClientImpl::MapGet(const Hexagon *hex, const int64_t radius, bool fill) {
@@ -137,7 +123,13 @@ std::vector<Hexagon> HexagonClientImpl::MapGet(const Hexagon *hex, const int64_t
     if (status.ok()) {
 
         for(auto hexpb: hexLocationList.hexloc()) {
-            result.push_back(Hexagon(hexpb.x(), hexpb.y(), hexpb.z(), hexpb.hexid(), ConvertEnum(hexpb.direction())));
+            std::map<std::string, std::string> data = std::map<std::string, std::string> {};
+            for (auto & [key, value] : hexpb.data())
+            {
+                data.insert_or_assign(key, value);
+            }
+
+            result.push_back(Hexagon(hexpb.x(), hexpb.y(), hexpb.z(), hexpb.hexid(), data));
         }
     } else {
         std::cout << status.error_code() << ": " << status.error_message() << std::endl;

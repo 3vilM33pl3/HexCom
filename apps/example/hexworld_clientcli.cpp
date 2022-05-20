@@ -16,16 +16,13 @@ int main(int ac, char** av) {
     hc.ConnectToServer();
 
     if(hc.GetConnectionState() == hw_conn_state::HEXWORLD_CONNECTION_READY || hc.GetConnectionState() == hw_conn_state::HEXWORLD_CONNECTION_IDLE) {
-        auto hexes = hc.GetHexagonRing(new Hexagon(0, 0, 0, "", std::map<std::string, std::string>{} ), 2, true);
+        auto hexes = hc.GetHexagonRing(new Hexagon(0, 0, 0, "" ), 2, true);
         for (const auto &hex : hexes) {
             std::cout << "[X: " << hex.X << ", Y: " << hex.Y << ", Z: " << hex.Z << "]" << std::endl;
-            for(const auto& [key, value] : hex.Data ) {
+            for(const auto& [key, value] : hex.GlobalData ) {
                 std::cout << "\t" << key << " - " << value << std::endl;
             }
-        }
-        for (const auto &hex : hexes) {
-            std::cout << hex.X << "," << hex.Y << "," << hex.Z << "," << hex.Type << " " << std::endl;
-            for(const auto& [key, value] : hex.Data ) {
+            for(const auto& [key, value] : hex.LocalData ) {
                 std::cout << "\t" << key << " - " << value << std::endl;
             }
         }

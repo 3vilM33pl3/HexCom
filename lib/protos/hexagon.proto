@@ -9,7 +9,8 @@ message HexLocation {
     int64 Y = 2;
     int64 Z = 3;
     string HexID = 5;
-    map<string, string> Data = 6;
+    map<string, string> LocalData = 6;
+    map<string, string> GlobalData = 7;
 }
 
 message HexInfo {

@@ -123,13 +123,19 @@ std::vector<Hexagon> HexagonClientImpl::MapGet(const Hexagon *hex, const int64_t
     if (status.ok()) {
 
         for(auto hexpb: hexLocationList.hexloc()) {
-            std::map<std::string, std::string> data = std::map<std::string, std::string> {};
-            for (auto & [key, value] : hexpb.data())
+            std::map<std::string, std::string> globaldata = std::map<std::string, std::string> {};
+            for (auto & [key, value] : hexpb.globaldata())
             {
-                data.insert_or_assign(key, value);
+                globaldata.insert_or_assign(key, value);
             }
 
-            result.push_back(Hexagon(hexpb.x(), hexpb.y(), hexpb.z(), hexpb.hexid(), data));
+            std::map<std::string, std::string> localdata = std::map<std::string, std::string> {};
+            for (auto & [key, value] : hexpb.localdata())
+            {
+                localdata.insert_or_assign(key, value);
+            }
+
+            result.push_back(Hexagon(hexpb.x(), hexpb.y(), hexpb.z(), hexpb.hexid(), globaldata, localdata));
         }
     } else {
         std::cout << status.error_code() << ": " << status.error_message() << std::endl;
